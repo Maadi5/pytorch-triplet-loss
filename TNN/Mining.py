@@ -312,9 +312,19 @@ def online_mine_hard(labels, embeddings, margin, squared=False, device='cpu'):
 
     # Combine biggest d(a, p) and smallest d(a, n) into final triplet loss
     triplet_loss = torch.max(hardest_positive_dist - hardest_negative_dist + margin, torch.Tensor([0.0]).to(device))
-    
+
+
+    og_triplet_l = anchor_positive_dist - anchor_negative_dist + margin
+    mask = _get_triplet_mask(labels, device=device)
+    mask = mask.float()
+    og_triplet_l = mask * og_triplet_l
+    success_triplets = (og_triplet_l < 1e-16).float()
+    num_success_triplets = torch.sum(success_triplets)
+    num_valid_triplets = torch.sum(mask)
+    accuracy = num_success_triplets / (num_valid_triplets)
+
     # Get final mean triplet loss
     triplet_loss = torch.mean(triplet_loss)
 
-    return triplet_loss, torch.sum(mask_anchor_positive), torch.sum(mask_anchor_negative)
+    return triplet_loss, torch.sum(mask_anchor_positive), torch.sum(mask_anchor_negative), accuracy
 
