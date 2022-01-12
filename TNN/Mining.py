@@ -128,7 +128,6 @@ def online_mine_all(labels, embeddings, margin, squared=False, device='cpu'):
     """
     # Get the pairwise distance matrix
     pairwise_dist = _pairwise_distances(embeddings, squared=squared, device=device)
-    print(pairwise_dist.shape)
     # shape (batch_size, batch_size, 1)
     anchor_positive_dist = torch.unsqueeze(pairwise_dist, 2)
     assert anchor_positive_dist.shape[2] == 1, "{}".format(anchor_positive_dist.shape)
