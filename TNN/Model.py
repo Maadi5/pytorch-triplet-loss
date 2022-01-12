@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class TNN(nn.Module):
-    def __init__(self, input_shape=(), output_size=4):
+    def __init__(self, input_shape=(), output_size=128):
         super(TNN, self).__init__()
         self.cnn1 = nn.Conv2d(input_shape[0], 128, (7,7))
         self.cnn2 = nn.Conv2d(128, 256, (5,5))
