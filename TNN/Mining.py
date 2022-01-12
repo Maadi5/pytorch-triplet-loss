@@ -162,7 +162,7 @@ def online_mine_all(labels, embeddings, margin, squared=False, device='cpu'):
     # Get final mean triplet loss over the positive valid triplets
     triplet_loss = torch.sum(triplet_loss) / (num_positive_triplets + 1e-16)
 
-    return triplet_loss, num_positive_triplets, num_valid_triplets
+    return triplet_loss, num_positive_triplets, num_valid_triplets, fraction_positive_triplets
 
 def _get_anchor_positive_triplet_mask(labels, device):
     """Return a 2D mask where mask[a, p] is True iff a and p are distinct and have same label.
