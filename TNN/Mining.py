@@ -128,6 +128,66 @@ def online_mine_all(labels, embeddings, margin, squared=False, device='cpu'):
     """
     # Get the pairwise distance matrix
     pairwise_dist = _pairwise_distances(embeddings, squared=squared, device=device)
+    print(pairwise_dist.shape)
+    # shape (batch_size, batch_size, 1)
+    anchor_positive_dist = torch.unsqueeze(pairwise_dist, 2)
+    assert anchor_positive_dist.shape[2] == 1, "{}".format(anchor_positive_dist.shape)
+    # shape (batch_size, 1, batch_size)
+    anchor_negative_dist = torch.unsqueeze(pairwise_dist, 1)
+    assert anchor_negative_dist.shape[1] == 1, "{}".format(anchor_negative_dist.shape)
+
+    # Compute a 3D tensor of size (batch_size, batch_size, batch_size)
+    # triplet_loss[i, j, k] will contain the triplet loss of anchor=i, positive=j, negative=k
+    # Uses broadcasting where the 1st argument has shape (batch_size, batch_size, 1)
+    # and the 2nd (batch_size, 1, batch_size)
+    triplet_loss = anchor_positive_dist - anchor_negative_dist + margin
+
+
+    # Put to zero the invalid triplets
+    # (where label(a) != label(p) or label(n) == label(a) or a == p)
+    mask = _get_triplet_mask(labels, device=device)
+    mask = mask.float()
+    
+    triplet_loss = mask*triplet_loss
+
+    #number of negative losses (correct 'prediction')
+    success_triplets = (triplet_loss < 1e-16).float()
+    # Remove negative losses (i.e. the easy triplets)
+    triplet_loss = torch.max(triplet_loss, torch.Tensor([0.0]).to(device))
+
+    # Count number of positive triplets (where triplet_loss > 0)
+    valid_triplets = (triplet_loss > 1e-16).float()
+    
+    num_positive_triplets = torch.sum(valid_triplets)
+    num_success_triplets = torch.sum(success_triplets)
+
+    num_valid_triplets = torch.sum(mask)
+    accuracy = num_success_triplets / num_valid_triplets
+
+    # Get final mean triplet loss over the positive valid triplets
+    triplet_loss = torch.sum(triplet_loss) / (num_positive_triplets + 1e-16)
+
+    return triplet_loss, num_positive_triplets, num_valid_triplets, accuracy
+
+
+
+
+
+
+def batch_accuracy(labels, embeddings, margin, squared=False, device='cpu'):
+    """Build the triplet loss over a batch of embeddings.
+    We generate all the valid triplets and average the loss over the positive ones.
+    Args:
+        labels: labels of the batch, of size (batch_size,)
+        embeddings: tensor of shape (batch_size, embed_dim)
+        margin: margin for triplet loss
+        squared: Boolean. If true, output is the pairwise squared euclidean distance matrix.
+                 If false, output is the pairwise euclidean distance matrix.
+    Returns:
+        triplet_loss: scalar tensor containing the triplet loss
+    """
+    # Get the pairwise distance matrix
+    pairwise_dist = _pairwise_distances(embeddings, squared=squared, device=device)
     # shape (batch_size, batch_size, 1)
     anchor_positive_dist = torch.unsqueeze(pairwise_dist, 2)
     assert anchor_positive_dist.shape[2] == 1, "{}".format(anchor_positive_dist.shape)
@@ -145,24 +205,32 @@ def online_mine_all(labels, embeddings, margin, squared=False, device='cpu'):
     # (where label(a) != label(p) or label(n) == label(a) or a == p)
     mask = _get_triplet_mask(labels, device=device)
     mask = mask.float()
-    
-    triplet_loss = mask*triplet_loss
 
-    # Remove negative losses (i.e. the easy triplets)
-    triplet_loss = torch.max(triplet_loss, torch.Tensor([0.0]).to(device))
+    triplet_loss = mask * triplet_loss
+
+    # # Remove negative losses (i.e. the easy triplets)
+    # triplet_loss = torch.max(triplet_loss, torch.Tensor([0.0]).to(device))
 
     # Count number of positive triplets (where triplet_loss > 0)
-    valid_triplets = (triplet_loss > 1e-16).float()
-    
-    num_positive_triplets = torch.sum(valid_triplets)
-    
+    # fail_triplets = (triplet_loss > 1e-16).float()
+
+    #count number of negative triplets(where triplet_loss<0)
+    success_triplets = (triplet_loss < 1e-16).float()
+
+
+
+    num_success_triplets = torch.sum(success_triplets)
     num_valid_triplets = torch.sum(mask)
-    fraction_positive_triplets = num_positive_triplets / (num_valid_triplets + 1e-16)
+    accuracy = num_success_triplets / (num_valid_triplets)
+    #
+    # # Get final mean triplet loss over the positive valid triplets
+    # triplet_loss = torch.sum(triplet_loss) / (num_positive_triplets + 1e-16)
 
-    # Get final mean triplet loss over the positive valid triplets
-    triplet_loss = torch.sum(triplet_loss) / (num_positive_triplets + 1e-16)
+    return accuracy
 
-    return triplet_loss, num_positive_triplets, num_valid_triplets, fraction_positive_triplets
+
+
+
 
 def _get_anchor_positive_triplet_mask(labels, device):
     """Return a 2D mask where mask[a, p] is True iff a and p are distinct and have same label.
