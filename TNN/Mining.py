@@ -168,7 +168,26 @@ def online_mine_all(labels, embeddings, margin, squared=False, device='cpu'):
 
     return triplet_loss, num_positive_triplets, num_valid_triplets, accuracy
 
+def valid_loss(model, margin, test_loader, mine_hard):
+    for i, data in enumerate(test_loader, 0):
+    # get the inputs
+    model.eval()
+    inputs, labels = data
+    l2_ = util.get_lbl_val(label_classes, setb)
+    index_remove = util.find_index_elementlist(labels, l2_)
+    inputs = np.delete(inputs, index_remove, axis = 0)
+    labels = np.delete(labels, index_remove, axis = 0)
 
+    inputs = inputs.to(device)
+    labels = labels.to(device)
+
+    # forward + backward + optimize
+    outputs = model(inputs)
+    if mine_hard:
+      loss, pos_triplet, valid_triplet, _ = Mining.online_mine_hard(labels, outputs, margin=margin, squared=True, device=device)
+    else:
+      loss, pos_triplet, valid_triplet, _ = Mining.online_mine_all(labels, outputs, margin=margin, squared=True, device=device)
+    return loss
 
 
 
