@@ -1,5 +1,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
+import random
 
 class AverageMeter(object):
 	"""Computes and stores the average and current value"""
