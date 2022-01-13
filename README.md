@@ -1,12 +1,22 @@
 # PyTorch Triplet Loss and Online Mining
-Implementation of triplet loss, and online mining on Pytorch
+Implementation of triplet loss, and online mining on Pytorch for training on for the EMNIST dataset.
 
-This code is a PyTorch implementation of Olivier Moindrot's blog post https://omoindrot.github.io/triplet-loss and his github repository https://github.com/omoindrot/tensorflow-triplet-loss, who implement the triplet loss and online mining on Tensorflow.
+# Model:
+- Since this model is designed for a different dataset from the original, I have implemented a modified version of Resnet18 architecture, instead of the more rudimentary one in the original repo. (which is for MNIST)
+- Output_sizes have also been modified.
+- - The 'experiments.xls' file included shows the different iterations I have tried on the model.
 
-My repository aims at implementing triplet loss with minimal amount of codes.
-See my Keras version here https://github.com/KinWaiCheuk/Triplet-net-keras (offline mining version)
+# Task:
 
-![alt text](https://github.com/KinWaiCheuk/Triplet-net-pytorch/blob/master/10class.gif?raw=true)
+## Training:
+- This code randomly picks 20 classes from the EMNIST dataset and trains the network using Triplet loss. (I have used the 'hard' config to force harder examples and get better results)
+- After training, you can visualize the new clusters.
+## Testing:
+- As per the assignment, the goal is to check how well the model performs as a classifier for classes it hasn't seen before. 
+- Hence, we pick the remaining 6 classes, create threshold limits for classification based on the intra-class distances (derived from inference) and create a classifier.
+- I managed to achieve an accuracy of 82.5% after 100 iterations on the Resnet model.
+
+
 
 # Dependencies
 pytorch >=1.3
