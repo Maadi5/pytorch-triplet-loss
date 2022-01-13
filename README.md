@@ -14,7 +14,7 @@
 - After training, you can visualize the new clusters.
 ## Testing:
 - As per the assignment, the goal is to check how well the model performs as a classifier for classes it hasn't seen before. 
-- Hence, we pick the remaining 6 classes, create threshold limits for classification based on the intra-class distances (derived from inference) and create a classifier.
+- Hence, we pick the remaining 6 classes, create threshold limits for classification based on the intra-class distances (derived from inference) and use threshold value to classify.
 - I managed to achieve an accuracy of 82.5% after 100 iterations on the Resnet model.
 
 
