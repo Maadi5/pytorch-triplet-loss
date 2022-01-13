@@ -3,7 +3,7 @@ import random
 from itertools import permutations
 import numpy as np
 import torch
-import util
+import uti
 """
 This code is a re-implmentationm of the code written in Tensorflow
 https://omoindrot.github.io/triplet-loss
