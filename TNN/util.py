@@ -58,3 +58,14 @@ def imshow(img,text=None,should_save=False):
 def show_plot(iteration,loss):
     plt.plot(iteration,loss)
     plt.show()
+	
+def compare_embeddings(input1, input2, thresh_val):
+    concatenated = torch.cat((input1,input2),0).cuda()
+    embeddings = model(concatenated)
+    dists = Mining._pairwise_distances(embeddings, squared=True, device=device)
+    dist = dists.cpu().detach()
+    if float(dist[0][1])> thresh_val: #avg_intra_dist.avg:
+      prediction = 0
+    else:
+      prediction = 1
+    return prediction
