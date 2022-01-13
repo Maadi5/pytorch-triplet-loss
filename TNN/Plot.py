@@ -6,14 +6,12 @@ import os
 
 # Define our own plot function
 def scatter(x, labels, root='plot', subtitle=None, dataset='MNIST'):
-    print("IS IT EVEN WORKING WTF")
     if dataset != 'EMNIST':
         num_classes = len(set(labels)) # Calculate the number of classes
     else:
         num_classes = 27
 
     palette = np.array(sns.color_palette("hls", num_classes)) # Choosing color
-    print(palette.shape)
     ## Create a seaborn scatter plot ##
     f = plt.figure(figsize=(8, 8))
     ax = plt.subplot(aspect='equal')
