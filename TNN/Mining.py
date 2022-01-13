@@ -3,7 +3,7 @@ import random
 from itertools import permutations
 import numpy as np
 import torch
-import uti
+import util
 """
 This code is a re-implmentationm of the code written in Tensorflow
 https://omoindrot.github.io/triplet-loss
@@ -15,7 +15,6 @@ All the doc strings and comments are from the original implmentation
 
 def offline(x,y,testsize=0.3,ap_pairs=10,an_pairs=10):
     data_xy = tuple([x,y])
-
     trainsize = 1-testsize
 
     triplet_train_pairs = []
