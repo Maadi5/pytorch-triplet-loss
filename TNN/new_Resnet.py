@@ -236,7 +236,7 @@ class hybrid_Resnet(nn.Module):
     def __init__(self, block, layers, num_classes=1000, zero_init_residual=False,
                  groups=1, width_per_group=64, replace_stride_with_dilation=None,
                  norm_layer=None, input_shape=(), output_size=128):
-        super(ResNet, self).__init__()
+        super(hybrid_Resnet, self).__init__()
         if norm_layer is None:
             norm_layer = nn.BatchNorm2d
         self._norm_layer = norm_layer
