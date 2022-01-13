@@ -1,4 +1,5 @@
 import numpy as np
+from matplotlib import pyplot as plt
 
 class AverageMeter(object):
 	"""Computes and stores the average and current value"""
@@ -44,3 +45,15 @@ def find_index_elementlist(main_arr, id_list):
 		index_lbl.extend(ar_l)
 	return index_lbl
 
+def imshow(img,text=None,should_save=False):
+    npimg = img.numpy()
+    plt.axis("off")
+    if text:
+        plt.text(75, 8, text, style='italic',fontweight='bold',
+            bbox={'facecolor':'white', 'alpha':0.8, 'pad':10})
+    plt.imshow(np.transpose(npimg, (1, 2, 0)))
+    plt.show()
+
+def show_plot(iteration,loss):
+    plt.plot(iteration,loss)
+    plt.show()
