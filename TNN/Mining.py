@@ -182,9 +182,9 @@ def valid_loss(model, margin, test_loader, mine_hard, setb, label_classes, devic
         # forward + backward + optimize
         outputs = model(inputs)
         if mine_hard:
-          loss, pos_triplet, valid_triplet, _ = Mining.online_mine_hard(labels, outputs, margin=margin, squared=True, device=device)
+          loss, pos_triplet, valid_triplet, _ = online_mine_hard(labels, outputs, margin=margin, squared=True, device=device)
         else:
-          loss, pos_triplet, valid_triplet, _ = Mining.online_mine_all(labels, outputs, margin=margin, squared=True, device=device)
+          loss, pos_triplet, valid_triplet, _ = online_mine_all(labels, outputs, margin=margin, squared=True, device=device)
 
     return loss
 
