@@ -185,7 +185,8 @@ def valid_loss(model, margin, test_loader, mine_hard, setb, label_classes, devic
           loss, pos_triplet, valid_triplet, _ = online_mine_hard(labels, outputs, margin=margin, squared=True, device=device)
         else:
           loss, pos_triplet, valid_triplet, _ = online_mine_all(labels, outputs, margin=margin, squared=True, device=device)
-
+    loss = loss.detach().cpu()
+    loss = float(loss)
     return loss
 
 
