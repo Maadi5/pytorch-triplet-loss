@@ -61,7 +61,7 @@ def show_plot(iteration,loss):
     plt.plot(iteration,loss)
     plt.show()
 	
-def compare_embeddings(input1, input2, thresh_val):
+def compare_embeddings(model, input1, input2, thresh_val):
     concatenated = torch.cat((input1,input2),0).cuda()
     embeddings = model(concatenated)
     dists = Mining._pairwise_distances(embeddings, squared=True, device=device)
