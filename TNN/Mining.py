@@ -167,7 +167,7 @@ def online_mine_all(labels, embeddings, margin, squared=False, device='cpu'):
 
     return triplet_loss, num_positive_triplets, num_valid_triplets, accuracy
 
-def valid_loss(model, margin, test_loader, mine_hard, setb):
+def valid_loss(model, margin, test_loader, mine_hard, setb, label_classes):
     model.eval()
     for i, data in enumerate(test_loader, 0):
         inputs, labels = data
