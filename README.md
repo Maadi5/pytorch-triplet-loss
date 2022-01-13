@@ -5,7 +5,7 @@
 # Model:
 - Since this model is designed for a different dataset from the original, I have implemented a modified version of Resnet18 architecture, instead of the more rudimentary one in the original repo. (which is for MNIST)
 - Output_sizes have also been modified.
-- The 'experiments.xls' file included shows the different iterations I have tried on the model.
+- All model training experiments documented here: https://docs.google.com/spreadsheets/d/1_O3CetFmNNdVCo2OIOdrkai5emCOmzQpxxYBG5hFcp4/edit?usp=sharing
 
 # Task:
 
