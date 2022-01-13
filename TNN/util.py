@@ -1,6 +1,8 @@
 import numpy as np
 from matplotlib import pyplot as plt
 import random
+import torch
+from TNN import Mining
 
 class AverageMeter(object):
 	"""Computes and stores the average and current value"""
