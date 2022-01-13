@@ -1,11 +1,11 @@
 # PyTorch Triplet Loss and Online Mining
-Colab Notebook: https://colab.research.google.com/drive/1_1jwzyqdJWxoMgc7nKh-kPszJyxJ0xr3?usp=sharing
-Implementation of triplet loss, and online mining on Pytorch for training on for the EMNIST dataset.
+- Colab Notebook: https://colab.research.google.com/drive/1_1jwzyqdJWxoMgc7nKh-kPszJyxJ0xr3?usp=sharing
+- Implementation of triplet loss, and online mining on Pytorch for training on for the EMNIST dataset.
 
 # Model:
 - Since this model is designed for a different dataset from the original, I have implemented a modified version of Resnet18 architecture, instead of the more rudimentary one in the original repo. (which is for MNIST)
 - Output_sizes have also been modified.
-- - The 'experiments.xls' file included shows the different iterations I have tried on the model.
+- The 'experiments.xls' file included shows the different iterations I have tried on the model.
 
 # Task:
 
