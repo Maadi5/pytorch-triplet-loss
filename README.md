@@ -1,4 +1,4 @@
-# PyTorch Triplet Loss and Online Mining - EMNSIT similarity 
+# PyTorch Triplet Loss and Online Mining - EMNIST similarity 
 - Colab Notebook (for latest): https://colab.research.google.com/drive/1_1jwzyqdJWxoMgc7nKh-kPszJyxJ0xr3?usp=sharing
 - Implementation of triplet loss, and online mining on Pytorch for training on for the EMNIST dataset.
 
