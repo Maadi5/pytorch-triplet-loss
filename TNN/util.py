@@ -2,6 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 import random
 import torch
+import copy
 from TNN import Mining
 
 class AverageMeter(object):
@@ -23,10 +24,11 @@ class AverageMeter(object):
 
 
 def split_label_class(labels, num_split):
-	labels.pop(labels.index('N/A'))
-	set1 = random.sample(labels, num_split)
+	ls = copy.deepcopy(labels)
+	ls.pop(labels.index('N/A'))
+	set1 = random.sample(ls, num_split)
 	set2 = []
-	for i in labels:
+	for i in ls:
 		if i not in set1:
 			set2.append(i)
 	return set1, set2
